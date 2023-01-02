@@ -8,12 +8,25 @@ use Ant\Tracker\Registry;
 
 class DataMapper
 {
-    private Registry $registry;
+    /**
+     * @var Registry
+     */
+    protected Registry $registry;
+
+    /**
+     *
+     */
     public function __construct()
     {
         $this->registry = Registry::instance();
     }
-    protected function select(string $query, array $options = []): array|bool
+
+    /**
+     * @param string $query
+     * @param array $options
+     * @return array
+     */
+    protected function select(string $query, array $options = []): array
     {
         $sqlConfig = $this->registry->getConfig()['sql'];
         $pdo = new \PDO($sqlConfig['dsn'], $sqlConfig['username'], $sqlConfig['password']);
@@ -21,6 +34,12 @@ class DataMapper
         $pdoStmt->execute($options);
         return $pdoStmt->fetchAll();
     }
+
+    /**
+     * @param string $query
+     * @param array $options
+     * @return void
+     */
     protected function edit(string $query, array $options): void
     {
         $sqlConfig = $this->registry->getConfig()['sql'];

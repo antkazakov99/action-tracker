@@ -1,6 +1,11 @@
 <?php
 
-function autoload($class) {
+/**
+ * @param string $class
+ * @return void
+ * @throws JsonException
+ */
+function autoload(string $class) {
     $autoloadConfigPath = __DIR__ . '/autoload.json';
     if (file_exists($autoloadConfigPath)) {
         $autoloadClassesJson = file_get_contents($autoloadConfigPath);
@@ -9,28 +14,6 @@ function autoload($class) {
             include __DIR__ . "/" . $autoloadClasses[$class];
         }
     }
-}
-
-function autoloadXml($class) {
-    $autoloadConfigPath = __DIR__ . '/autoload.xml';
-    $xmlElement = simplexml_load_file($autoloadConfigPath);
-    $filePath = '';
-    $namespaces = explode('\\', $class);
-    var_dump($namespaces);
-    foreach ($namespaces as $namespace) {
-        var_dump($xmlElement->children(), $namespace);
-        if($xmlElement->children($namespace)) {
-            $xmlElement = $xmlElement->children($namespace);
-            $path = $xmlElement->attributes('directory');
-            //var_dump($path);
-            $filePath .= '/' . $path;
-        } else {
-            break;
-        }
-    }
-    $filePath .= '/' . end($namespaces) . '.php';
-    var_dump($filePath);
-    // include_once __DIR__ . $filePath;
 }
 
 spl_autoload_register('autoload');

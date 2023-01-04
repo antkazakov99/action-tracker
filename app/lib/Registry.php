@@ -2,7 +2,7 @@
 
 namespace Ant\Tracker;
 
-include_once 'autoload.php';
+include_once '../autoload.php';
 
 use Ant\Tracker\DataMappers\ActionMapper;
 use Ant\Tracker\DataMappers\MonthMapper;
@@ -13,7 +13,7 @@ use Ant\Tracker\Factories\MonthFactory;
 
 class Registry
 {
-    private const CONFIG_PATH = __DIR__ . '/config.ini';
+    private const CONFIG_PATH = __DIR__ . '/../config.ini';
     /**
      * @var Registry|null
      */

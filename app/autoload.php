@@ -11,7 +11,7 @@ function autoload(string $class) {
         $autoloadClassesJson = file_get_contents($autoloadConfigPath);
         $autoloadClasses = json_decode($autoloadClassesJson, true, 512, JSON_THROW_ON_ERROR|JSON_UNESCAPED_UNICODE);
         if (array_key_exists($class, $autoloadClasses)) {
-            include __DIR__ . "/" . $autoloadClasses[$class];
+            include __DIR__ . "/lib/" . $autoloadClasses[$class];
         }
     }
 }

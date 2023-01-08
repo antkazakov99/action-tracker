@@ -2,8 +2,6 @@
 
 namespace Ant\Tracker\DataMappers;
 
-include_once '../autoload.php';
-
 use Ant\Tracker\Entities\Date;
 
 class DateMapper extends DataMapper
@@ -14,7 +12,14 @@ class DateMapper extends DataMapper
      */
     public function getById(int $id): ?Date
     {
-        $query = 'SELECT Dates.id, Dates.date, Dates.dateType FROM Dates WHERE Dates.id = :id';
+        $query = <<<'MySQL'
+        SELECT Dates.id, 
+               Dates.date, 
+               Dates.dateType 
+        FROM Dates 
+        WHERE Dates.id = :id
+        MySQL;
+
         $queryResult = $this->select($query, ['id' => $id])[0];
         return $queryResult ? $this->registry->getDateFactory()->createObject($queryResult) : null;
     }
@@ -26,7 +31,15 @@ class DateMapper extends DataMapper
      */
     public function getByMonth(int $year, int $month): array
     {
-        $query = 'SELECT Dates.id, Dates.date, Dates.dateType FROM Dates WHERE YEAR(Dates.date) = :year AND MONTH(Dates.date) = :month';
+        $query = <<<'MySQL'
+        SELECT Dates.id, 
+               Dates.date, 
+               Dates.dateType 
+        FROM Dates 
+        WHERE YEAR(Dates.date) = :year 
+          AND MONTH(Dates.date) = :month
+        MySQL;
+
         $queryResult = $this->select($query, ['year' => $year, 'month' => $month]);
         $dates = [];
         foreach ($queryResult as $row)
@@ -41,7 +54,13 @@ class DateMapper extends DataMapper
      */
     public function getAll(): array
     {
-        $query = 'SELECT Dates.id, Dates.date, Dates.dateType FROM Dates';
+        $query = <<<'MySQL'
+        SELECT Dates.id, 
+               Dates.date, 
+               Dates.dateType 
+        FROM Dates
+        MySQL;
+
         $queryResult = $this->select($query);
         $dates = [];
         foreach ($queryResult as $row)
@@ -57,7 +76,11 @@ class DateMapper extends DataMapper
      */
     public function add(Date $date): void
     {
-        $query = 'INSERT INTO Dates (date, dateType) VALUE (:date, :dateType)';
+        $query = <<<'MySQL'
+        INSERT INTO Dates (date, dateType) 
+        VALUE (:date, :dateType)
+        MySQL;
+
         $this->edit($query, [
             'date' => $date->getDate(),
             'dateType' => $date->getDateType()->value

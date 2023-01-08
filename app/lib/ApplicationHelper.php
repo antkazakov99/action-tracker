@@ -2,8 +2,6 @@
 
 namespace Ant\Tracker;
 
-include_once 'autoload.php';
-
 use Ant\Tracker\Entities\Action;
 use Ant\Tracker\Entities\Date;
 use Ant\Tracker\Entities\Month;
@@ -19,23 +17,28 @@ class ApplicationHelper
     {
         $daysCount = cal_days_in_month(CAL_GREGORIAN, $month, $year);
         $datesInDb = Registry::instance()->getDateMapper()->getByMonth($year, $month);
+
         $dates = [];
+        $findDate = function (Date $var) use(&$dates)
+        {
+            return $dates[$var->getDate()] = $var;
+        };
+        array_map($findDate, $datesInDb);
+
         for ($day = 1; $day <= $daysCount; $day++) {
             $dateString = self::formatDate($year, $month, $day);
-            $findDate = function ($carry, Date $item) use($dateString)
-            {
-                return $item->getDate() === $dateString ? $item : $carry;
-            };
 
-            $date = array_reduce($datesInDb, $findDate, null);
-
-            if (!$date) {
-                $dayOfTheWeek = self::getDayOfTheWeek($year, $month, $day) < 6 ? DateType::Workday : DateType::DayOff;
-                $date = Registry::instance()->getDateFactory()->createObject(['id' => null, 'date' => $dateString, 'dateType' => $dayOfTheWeek->value]);
+            if (!$dates[$dateString]) {
+                $dayOfTheWeek = self::getDayOfTheWeek($year, $month, $day) < 6 ? DateType::Workday : DateType::Weekend;
+                $dates[$dateString] = Registry::instance()->getDateFactory()->createObject(['id' => null, 'date' => $dateString, 'dateType' => $dayOfTheWeek->value]);
             }
 
-            $dates[] = $date;
+            $actions = Registry::instance()->getActionMapper()->getByDate($dateString);
+            $dates[$dateString]->setActions($actions);
         }
+
+        ksort($dates);
+
         return $dates;
     }
 

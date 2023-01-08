@@ -2,8 +2,6 @@
 
 namespace Ant\Tracker\DataMappers;
 
-include_once '../autoload.php';
-
 use Ant\Tracker\Registry;
 
 class DataMapper

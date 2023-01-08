@@ -7,10 +7,11 @@
   "Ant\\Tracker\\DateType": "DateType.php",
   "Ant\\Tracker\\Entities\\Action": "Entities/Action.php",
   "Ant\\Tracker\\Entities\\Date": "Entities/Date.php",
+  "Ant\\Tracker\\Entities\\DomainObject": "Entities/DomainObject.php",
   "Ant\\Tracker\\Entities\\Month": "Entities/Month.php",
-  "Ant\\Tracker\\Factories\\AbstractFactory": "Factories/AbstractFactory.php",
   "Ant\\Tracker\\Factories\\ActionFactory": "Factories/ActionFactory.php",
   "Ant\\Tracker\\Factories\\DateFactory": "Factories/DateFactory.php",
+  "Ant\\Tracker\\Factories\\DomainObjectFactory": "Factories/DomainObjectFactory.php",
   "Ant\\Tracker\\Factories\\MonthFactory": "Factories/MonthFactory.php",
   "Ant\\Tracker\\Registry": "Registry.php"
 }

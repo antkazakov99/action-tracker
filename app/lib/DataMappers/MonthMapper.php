@@ -2,8 +2,6 @@
 
 namespace Ant\Tracker\DataMappers;
 
-include_once '../autoload.php';
-
 use Ant\Tracker\Entities\Month;
 
 class MonthMapper extends DataMapper
@@ -14,7 +12,17 @@ class MonthMapper extends DataMapper
      */
     public function getById(int $id): ?Month
     {
-        $query = 'SELECT Months.id, Months.year, Months.month, Months.salary, Months.targetHours, Months.avgSalary FROM Months WHERE Months.id = :id';
+        $query = <<<'MySQL'
+        SELECT Months.id, 
+               Months.year, 
+               Months.month, 
+               Months.salary, 
+               Months.targetHours, 
+               Months.avgSalary
+        FROM Months
+        WHERE Months.id = :id
+        MySQL;
+
         $queryResult = $this->select($query, ['id' => $id])[0];
         return $queryResult ? $this->registry->getMonthFactory()->createObject($queryResult) : null;
     }
@@ -26,7 +34,18 @@ class MonthMapper extends DataMapper
      */
     public function get(int $year, int $month): ?Month
     {
-        $query = 'SELECT Months.id, Months.year, Months.month, Months.salary, Months.targetHours, Months.avgSalary FROM Months WHERE Months.year = :year AND Months.month = :month';
+        $query = <<<'MySQL'
+        SELECT Months.id, 
+               Months.year, 
+               Months.month, 
+               Months.salary, 
+               Months.targetHours, 
+               Months.avgSalary 
+        FROM Months 
+        WHERE Months.year = :year 
+          AND Months.month = :month
+        MySQL;
+
         $queryResult = $this->select($query, ['year' => $year, 'month' => $month])[0];
         return $queryResult ? $this->registry->getMonthFactory()->createObject($queryResult) : null;
     }
@@ -36,7 +55,16 @@ class MonthMapper extends DataMapper
      */
     public function getAll(): array
     {
-        $query = 'SELECT Months.id, Months.year, Months.month, Months.salary, Months.targetHours, Months.avgSalary FROM Months';
+        $query = <<<'MySQL'
+        SELECT Months.id, 
+               Months.year, 
+               Months.month, 
+               Months.salary, 
+               Months.targetHours, 
+               Months.avgSalary 
+        FROM Months
+        MySQL;
+
         $queryResult = $this->select($query);
         $months = [];
         foreach ($queryResult as $row)
@@ -52,7 +80,10 @@ class MonthMapper extends DataMapper
      */
     public function add(Month $month): void
     {
-        $query = 'INSERT INTO Months (year, month, salary, targetHours, avgSalary) VALUE (:year, :month, :salary, :targetHours, :avgSalary)';
+        $query = <<<'MySQL'
+        INSERT INTO Months (year, month, salary, targetHours, avgSalary) 
+        VALUE (:year, :month, :salary, :targetHours, :avgSalary)
+        MySQL;
         $this->edit($query, [
             'year' => $month->getYear(),
             'month' => $month->getMonth(),

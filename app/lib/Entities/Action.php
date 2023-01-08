@@ -2,7 +2,7 @@
 
 namespace Ant\Tracker\Entities;
 
-class Action
+class Action extends DomainObject
 {
     /**
      * @var int|null
@@ -124,5 +124,27 @@ class Action
     public function setEndTime(string $time): void
     {
         $this->endTime = $time;
+    }
+
+    /**
+     * @return array{id: int, taskUrl: string, date: string, startTime: string, endTime: string}
+     */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'taskUrl' => $this->taskUrl,
+            'date' => $this->date,
+            'startTime' => $this->startTime,
+            'endTime' => $this->endTime
+        ];
+    }
+
+    /**
+     * @return array{id: int, taskUrl: string, date: string, startTime: string, endTime: string}
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 }

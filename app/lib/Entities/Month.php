@@ -2,7 +2,7 @@
 
 namespace Ant\Tracker\Entities;
 
-class Month
+class Month extends DomainObject
 {
     /**
      * @var int|null
@@ -31,7 +31,11 @@ class Month
     /**
      * @var array<Date>
      */
-    private array $dates;
+    private array $dates = [];
+    /**
+     * @var array<Action>
+     */
+    private array $actions = [];
 
     /**
      * @param int|null $id
@@ -40,9 +44,8 @@ class Month
      * @param int $salary
      * @param int $targetHours
      * @param int $avgSalary
-     * @param array<Date> $dates
      */
-    public function __construct(?int $id, int $year, int $month, int $salary, int $targetHours, int $avgSalary, array $dates = [])
+    public function __construct(?int $id, int $year, int $month, int $salary, int $targetHours, int $avgSalary)
     {
         $this->id = $id;
         $this->year = $year;
@@ -50,7 +53,6 @@ class Month
         $this->salary = $salary;
         $this->targetHours = $targetHours;
         $this->avgSalary = $avgSalary;
-        $this->dates = $dates;
     }
 
     /**
@@ -161,5 +163,52 @@ class Month
     public function getDates(): array
     {
         return $this->dates;
+    }
+
+    /**
+     * @param array<Date> $dates
+     */
+    public function setDates(array $dates): void
+    {
+        $this->dates = $dates;
+    }
+
+    /**
+     * @return array<Action>
+     */
+    public function getActions(): array
+    {
+        return $this->actions;
+    }
+
+    /**
+     * @param array<Action> $actions
+     */
+    public function setActions(array $actions): void
+    {
+        $this->actions = $actions;
+    }
+
+    /**
+     * @return array{id: int, year: int, month: int, salary: int, targetHours: int, avgSalary: int}
+     */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'year' => $this->year,
+            'month' => $this->month,
+            'salary' => $this->salary,
+            'targetHours' => $this->targetHours,
+            'avgSalary' => $this->avgSalary
+        ];
+    }
+
+    /**
+     * @return array{id: int, year: int, month: int, salary: int, targetHours: int, avgSalary: int}
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 }

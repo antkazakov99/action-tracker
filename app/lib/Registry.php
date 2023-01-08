@@ -2,8 +2,6 @@
 
 namespace Ant\Tracker;
 
-include_once '../autoload.php';
-
 use Ant\Tracker\DataMappers\ActionMapper;
 use Ant\Tracker\DataMappers\MonthMapper;
 use Ant\Tracker\DataMappers\DateMapper;

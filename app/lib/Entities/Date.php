@@ -4,9 +4,7 @@ namespace Ant\Tracker\Entities;
 
 use Ant\Tracker\DateType;
 
-include_once '../autoload.php';
-
-class Date
+class Date extends DomainObject
 {
     /**
      * @var int|null
@@ -23,20 +21,18 @@ class Date
     /**
      * @var array<Action>
      */
-    private array $actions;
+    private array $actions = [];
 
     /**
      * @param int|null $id
      * @param string $date
      * @param DateType $dateType
-     * @param array<Action> $actions
      */
-    public function __construct(?int $id, string $date, DateType $dateType, array $actions)
+    public function __construct(?int $id, string $date, DateType $dateType)
     {
         $this->id = $id;
         $this->date = $date;
         $this->dateType = $dateType;
-        $this->actions = $actions;
     }
 
     /**
@@ -96,5 +92,33 @@ class Date
     public function getActions(): array
     {
         return $this->actions;
+    }
+
+    /**
+     * @param array<Action> $actions
+     */
+    public function setActions(array $actions): void
+    {
+        $this->actions = $actions;
+    }
+
+    /**
+     * @return array{id: int, date: string, dateType: int}
+     */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'date' => $this->date,
+            'dateType' => $this->dateType->value
+        ];
+    }
+
+    /**
+     * @return array{id: int, date: string, dateType: int}
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 }

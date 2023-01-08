@@ -4,12 +4,10 @@ namespace Ant\Tracker\Factories;
 
 use Ant\Tracker\Entities\Action;
 
-include_once '../autoload.php';
-
-class ActionFactory extends AbstractFactory
+class ActionFactory
 {
     /**
-     * @param array $row
+     * @param array{id: int, taskUrl: string, date: string, startTime: string, endTime: string} $row
      * @return Action
      */
     public function createObject(array $row): Action
